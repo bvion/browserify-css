@@ -163,11 +163,11 @@ var cssTransform = function(options, filename, callback) {
                     quoteLen = ((r[2] || r[3]) && r[1]) ? 1 : 0;
 
                     var dirname = path.dirname(filename);
-                    var localImagePath = path.resolve(dirname, url);
-
+                    var localImagePath = path.resolve(dirname, url).split(/[\?\#]/).shift();
+                    var isWoff2 = localImagePath.split(/\./).pop();
                     // Read the file in and convert it if its an image
                     var mimeType = mime.lookup(localImagePath);
-                    if (mimeType.startsWith('image')) {
+                    if (mimeType.startsWith('image') || isWoff2) {
                         // If a size limit given skip if file larger than limit
                         if(options.inlineImagesOptions.limit > 0) {
                             var stat = fs.statSync(localImagePath);
